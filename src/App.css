@@ -39,3 +39,7 @@ hgroup {
   overflow-wrap: break-word;
   /* Makes sure that big word in the paragraph actually breaks */
 }
+
+ul {
+  list-style: none;
+}

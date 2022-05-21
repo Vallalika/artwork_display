@@ -1,12 +1,11 @@
 import React from "react";
 import Artwork from "./Artwork";
 
-const ArtworkList = ({artworks}) => {
+const ArtworkList = ({artworks,thumbnails}) => {
     
     const artworkArray = artworks.map( (artwork, index) => {
-        return <li key={index}> <Artwork artwork={artwork}></Artwork> </li>
-
-        
+        let artworkThumbnail = thumbnails[index]
+        return <li key={index}> <Artwork artwork={artwork} thumbnail = {artworkThumbnail}/> </li>
     });
 
     return (
