@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from "react"
 import Profile from "../Components/Profile"
-import ArtworkList from "../Components/ArtworkList"
-import Display from "../Components/Display"
+import Artwork from "../Components/Artwork"
+import Display from "../Components/UserActions"
+import Filmstrip from "../Components/Filmstrip"
+import ArtworkBox from "./ArtworkBox"
 
 const MainBox = () => {
     const [artist, setArtist] = useState([])
@@ -9,6 +11,8 @@ const MainBox = () => {
     const [artworks, setArtworks] = useState([])
     const [imgEndpoint, setImgEndpoint] = useState("")
     const [thumbnails, setThumbnails] = useState([])
+    const [currentArtwork, setCurrentArtwork] = useState([])
+    const [currentImage, setCurrentImage] = useState("")
     
     useEffect( () => {
         loadArtist()
@@ -26,6 +30,12 @@ const MainBox = () => {
             getThumbnails()
         }
     }, [artworks])
+
+    useEffect( () => {
+        if (Object.keys(thumbnails).length > 0 && Object.keys(artworks).length > 0 ) {
+            setSelected(artworks[0],thumbnails[0])
+        }
+    }, [thumbnails])
 
     const loadArtist = () => {
         fetch('https://api.artic.edu/api/v1/artists/35809?fields=api_link,artwork_ids,birth_date,death_date,description,id,sort_title,title')
@@ -72,17 +82,24 @@ const MainBox = () => {
         setThumbnails(imgUrls)
     }
 
+    const setSelected = (artwork,thumbnail) => {
+        setCurrentArtwork(artwork)
+        setCurrentImage(thumbnail)
+    }
+
     return (
         <>  
             <h1> {artist.title}'s artwork from the Art Institute of Chicago</h1>
             <Display />
             <main>
-                <section profile="profile">
+                <ArtworkBox artworks = {artworks} thumbnails = {thumbnails} selectedArtwork = {currentArtwork} selectedImage = {currentImage}/>
+                {/* <Artwork artworks = {artworks} thumbnails = {thumbnails}/> */}
+                {/* <section profile="profile">
                     <Profile artist = {artist}/>
-                </section>
-                <section id="artworkList">
+                </section> */}
+                {/* <section id="artworkList">
                     {artworks.length > 0 ? < ArtworkList artworks={artworks} thumbnails={thumbnails}/> : "ARTWORKS LOADING"}
-                </section>
+                </section> */}
             </main>
         </>
     );
