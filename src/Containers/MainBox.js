@@ -54,10 +54,6 @@ const MainBox = () => {
         }
     }, [artworksWithImgs])
 
-    // useEffect( () => {
-    //     showFiltered(currentFilter)
-    // }, [currentFilter])
-
 // ACTIONS
 
     const loadArtist = () => {
@@ -119,8 +115,6 @@ const MainBox = () => {
     }
 
     const showFiltered = (filter) => {
-
-        console.log(`current filter is ${currentFilter}`)
         
         if (filter !== currentFilter) {
             setCurrentFilter(filter)
@@ -135,7 +129,7 @@ const MainBox = () => {
                 console.log("Within painting and watercolors")
                 const tempFilter = artworksWithImgs.filter(artwork => artwork["artwork_type_title"] === filter)
                 setFilteredArtworks(tempFilter)
-                setSelected(filteredArtworks[0])
+                setSelected(tempFilter[0])
             }
         }
     }
