@@ -9,8 +9,9 @@ const DisplayStyle = styled.section `
     align-items: center;
 `
 
-const info = styled.p`
+const Info = styled.p`
     margin-top: 0px;
+    margin-bottom: 0px;
 `
 
 const ArtworkDisplay = ({selectedArtwork,selectedImage}) => {
@@ -20,9 +21,9 @@ const ArtworkDisplay = ({selectedArtwork,selectedImage}) => {
             <DisplayStyle>
                 <img src={selectedImage} alt={`Image of ${selectedArtwork.title}`} />
                 <h3>{selectedArtwork.title}</h3>
-                    <info>{selectedArtwork["artwork_type_title"]} ({selectedArtwork["date_start"]} - {selectedArtwork["date_end"]}), {selectedArtwork["place_of_origin"]}</info>
-                    <info>Dimensions: {selectedArtwork["dimensions"]}</info>
-                    <info>Medium: {selectedArtwork["medium_display"]}</info>
+                    <Info>{selectedArtwork["artwork_type_title"]} ({selectedArtwork["date_start"]} - {selectedArtwork["date_end"]}), {selectedArtwork["place_of_origin"]}</Info>
+                    <Info>Dimensions: {selectedArtwork["dimensions"]}</Info>
+                    <Info>Medium: {selectedArtwork["medium_display"]}</Info>
             </DisplayStyle>
         </>
     );

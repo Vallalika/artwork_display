@@ -1,23 +1,42 @@
 import React, {useState, useEffect} from "react"
-import Display from "../Components/UserActions"
+import UserActions from "../Components/UserActions"
 import ArtworkBox from "../Components/ArtworkBox"
+import styled from "styled-components"
+
+const MainTitle = styled.h1 `
+    padding: 16px;
+`
 
 const MainBox = () => {
+    
+// STATES
+    
+    // Initial data fetched
     const [artist, setArtist] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
     const [artworks, setArtworks] = useState([])
     const [imgEndpoint, setImgEndpoint] = useState("")
-    const [thumbnails, setThumbnails] = useState([])
+    
+    // Data built
+    const [artworksWithImgs, setArtworksWithImgs] = useState([])
+
+    // Selected display
     const [currentArtwork, setCurrentArtwork] = useState([])
     const [currentImage, setCurrentImage] = useState("")
     
+    // Filters
+    const [currentFilter, setCurrentFilter] = useState("All")
+    const [filteredArtworks, setFilteredArtworks] = useState([])
+
+
+
+// EFFECTS
+
     useEffect( () => {
         loadArtist()
         }, [])
     
     useEffect( () => {
         if (Object.keys(artist).length > 0) {
-            setIsLoading(false)
             loadArtworks()
         }
     }, [artist])
@@ -25,14 +44,21 @@ const MainBox = () => {
     useEffect( () => {
         if (Object.keys(artworks).length > 0) {
             getThumbnails()
+            setFilteredArtworks(artworksWithImgs)
         }
     }, [artworks])
 
     useEffect( () => {
-        if (Object.keys(thumbnails).length > 0 && Object.keys(artworks).length > 0 ) {
-            setSelected(artworks[0],thumbnails[0])
+        if (Object.keys(artworksWithImgs).length > 0) {
+            setSelected(artworksWithImgs[0])
         }
-    }, [thumbnails])
+    }, [artworksWithImgs])
+
+    // useEffect( () => {
+    //     showFiltered(currentFilter)
+    // }, [currentFilter])
+
+// ACTIONS
 
     const loadArtist = () => {
         fetch('https://api.artic.edu/api/v1/artists/35809?fields=api_link,artwork_ids,birth_date,death_date,description,id,sort_title,title')
@@ -63,6 +89,7 @@ const MainBox = () => {
         .then(response => response.json())
         .then(artworks => (setImgEndpoint(artworks['config']['iiif_url']), setArtworks(artworks.data)))
         .catch(error => console.error)
+
     }
 
     const getThumbnails = () => {
@@ -76,21 +103,49 @@ const MainBox = () => {
             return(imgUrl)
         })
 
-        setThumbnails(imgUrls)
+        const addThumbnails = artworks.map((artwork, index) => {
+            let artworkUrl = imgUrls[index]
+            artwork["artworkUrl"] = artworkUrl
+            return artwork
+        })
+
+        setArtworksWithImgs(addThumbnails)
     }
 
-    const setSelected = (artwork,thumbnail) => {
+    const setSelected = (artwork) => {
         setCurrentArtwork(artwork)
-        const currentImageUrl = thumbnail.replace("200", "600")
+        const currentImageUrl = artwork.artworkUrl.replace("200", "600")
         setCurrentImage(currentImageUrl)
+    }
+
+    const showFiltered = (filter) => {
+
+        console.log(`current filter is ${currentFilter}`)
+        
+        if (filter !== currentFilter) {
+            setCurrentFilter(filter)
+            
+            if (filter === "All") {
+
+                console.log("Within all condition")
+                setFilteredArtworks(artworksWithImgs)
+                setSelected(artworksWithImgs[0])
+                
+            } else {
+                console.log("Within painting and watercolors")
+                const tempFilter = artworksWithImgs.filter(artwork => artwork["artwork_type_title"] === filter)
+                setFilteredArtworks(tempFilter)
+                setSelected(filteredArtworks[0])
+            }
+        }
     }
 
     return (
         <>  
-            <h1> {artist.title}'s artwork from the Art Institute of Chicago</h1>
-            <Display />
+            <MainTitle> {artist.title}'s artwork from the Art Institute of Chicago</MainTitle>
+            <UserActions showFiltered = {showFiltered} setCurrentFilter = {setCurrentFilter} />
             <main>
-                <ArtworkBox artworks = {artworks} thumbnails = {thumbnails} selectedArtwork = {currentArtwork} selectedImage = {currentImage} setSelected = {setSelected}/>
+                <ArtworkBox artworks = {filteredArtworks} selectedArtwork = {currentArtwork} selectedImage = {currentImage} setSelected = {setSelected}/>
             </main>
         </>
     );

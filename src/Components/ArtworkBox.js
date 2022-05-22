@@ -7,12 +7,12 @@ const MainDisplay = styled.main`
     display: flex
 `
 
-const ArtworkBox = ({artworks,thumbnails,selectedArtwork,selectedImage,setSelected}) => {
+const ArtworkBox = ({artworks,selectedArtwork,setSelected,selectedImage}) => {
 
     return (
         <>
             <MainDisplay>
-                <Filmstrip artworks = {artworks} thumbnails = {thumbnails} setSelected = {setSelected}/>
+                <Filmstrip artworks = {artworks} setSelected = {setSelected}/>
                 <ArtworkDisplay selectedArtwork = {selectedArtwork} selectedImage = {selectedImage}/>
             </MainDisplay>
         </>

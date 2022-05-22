@@ -12,11 +12,10 @@ const Item = styled.li`
     cursor: pointer;
 `
 
-const Filmstrip = ({artworks,thumbnails,setSelected}) => {
+const Filmstrip = ({artworks,setSelected}) => {
     
     const thumbnailArray = artworks.map( (artwork, index) => {
-        let artworkThumbnail = thumbnails[index]
-        return <Item key={index}> <Thumbnail artwork={artwork} thumbnail={artworkThumbnail} setSelected={setSelected}/> </Item>
+        return <Item key={index}> <Thumbnail artwork={artwork} setSelected={setSelected}/> </Item>
     });
 
     return (
