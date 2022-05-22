@@ -1,15 +1,14 @@
-import React from "react";
-import Artwork from "./Artwork";
+import React from "react"
 
-const Thumbnail = ({artwork,thumbnail}) => {
+const Thumbnail = ({artwork,thumbnail,setSelected}) => {
 
     const handleClick = () => {
-        return <p>  </p>
+        setSelected(artwork,thumbnail)
     }
 
     return (
         <img src={thumbnail} alt={`Thumbnail of ${artwork.title}`} onClick={handleClick} />
-    );
+    )
 }
 
-export default Thumbnail;
+export default Thumbnail

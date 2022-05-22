@@ -1,20 +1,31 @@
-import React from "react";
-import Thumbnail from "./Thumbnail";
+import React from "react"
+import Thumbnail from "./Thumbnail"
+import styled from "styled-components"
 
-const Filmstrip = ({artworks,thumbnails}) => {
+const LeftColumn = styled.ul`
+    flex: 0,1,20%;
+    margin-top: 0;
+    padding-right: 16px;
+    list-style: none;
+`
+const Item = styled.li`
+    cursor: pointer;
+`
+
+const Filmstrip = ({artworks,thumbnails,setSelected}) => {
     
     const thumbnailArray = artworks.map( (artwork, index) => {
         let artworkThumbnail = thumbnails[index]
-        return <li key={index}> <Thumbnail artwork={artwork} thumbnail = {artworkThumbnail}/> </li>
+        return <Item key={index}> <Thumbnail artwork={artwork} thumbnail={artworkThumbnail} setSelected={setSelected}/> </Item>
     });
 
     return (
         <>
-            <ul>
+            <LeftColumn>
                 {thumbnailArray}
-            </ul>
+            </LeftColumn>
         </>
     );
 }
 
-export default Filmstrip;
+export default Filmstrip

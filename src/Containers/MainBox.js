@@ -1,9 +1,6 @@
 import React, {useState, useEffect} from "react"
-import Profile from "../Components/Profile"
-import Artwork from "../Components/Artwork"
 import Display from "../Components/UserActions"
-import Filmstrip from "../Components/Filmstrip"
-import ArtworkBox from "./ArtworkBox"
+import ArtworkBox from "../Components/ArtworkBox"
 
 const MainBox = () => {
     const [artist, setArtist] = useState([])
@@ -84,7 +81,8 @@ const MainBox = () => {
 
     const setSelected = (artwork,thumbnail) => {
         setCurrentArtwork(artwork)
-        setCurrentImage(thumbnail)
+        const currentImageUrl = thumbnail.replace("200", "600")
+        setCurrentImage(currentImageUrl)
     }
 
     return (
@@ -92,14 +90,7 @@ const MainBox = () => {
             <h1> {artist.title}'s artwork from the Art Institute of Chicago</h1>
             <Display />
             <main>
-                <ArtworkBox artworks = {artworks} thumbnails = {thumbnails} selectedArtwork = {currentArtwork} selectedImage = {currentImage}/>
-                {/* <Artwork artworks = {artworks} thumbnails = {thumbnails}/> */}
-                {/* <section profile="profile">
-                    <Profile artist = {artist}/>
-                </section> */}
-                {/* <section id="artworkList">
-                    {artworks.length > 0 ? < ArtworkList artworks={artworks} thumbnails={thumbnails}/> : "ARTWORKS LOADING"}
-                </section> */}
+                <ArtworkBox artworks = {artworks} thumbnails = {thumbnails} selectedArtwork = {currentArtwork} selectedImage = {currentImage} setSelected = {setSelected}/>
             </main>
         </>
     );
